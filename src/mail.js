@@ -4,8 +4,8 @@ const Imap = require('imap');
 inspect = require('util').inspect;
 const {simpleParser} = require('mailparser');
 const imapConfig = {
-  user: 'YOUREMAIL',
-  password: 'YOURPASSWORD',
+  user: 'samadex5050@gmail.com',
+  password: '08101141109',
   host: 'imap.gmail.com',
   port: 993,
   tls: true,
@@ -18,31 +18,26 @@ const getEmails = () => {
       const imap = new Imap(imapConfig);
       imap.once('ready', () => {
         imap.openBox('INBOX', false, () => {
-          imap.search(['UNSEEN', ['SINCE', new Date()]], (err, results) => {
+          imap.search(['ALL', ['SINCE', new Date()]], (err, results) => {
             const f = imap.fetch(results, {bodies: ''});
             f.on('message', msg => {
               msg.on('body', stream => {
                 simpleParser(stream, async (err, parsed) => {
-                  const {from, subject, textAsHtml, text} = parsed;
-                  if(textAsHtml.search(subject) == -1){
-                    console.log("Not found");  
-                  }else{
-                    console.log("Found");    
-                  }
-                //   console.log(parsed);
+                  // const {from, subject, textAsHtml, text} = parsed;
+                  console.log(parsed);
                   /* Make API call to save the data
                      Save the retrieved data into a database.
                      E.t.c
                   */
                 });
               });
-              msg.once('attributes', attrs => {
-                const {uid} = attrs;
-                imap.addFlags(uid, ['\\Seen'], () => {
-                  // Mark the email as read after reading it
-                  console.log('Marked as read!');
-                });
-              });
+            //   msg.once('attributes', attrs => {
+            //     const {uid} = attrs;
+            //     imap.addFlags(uid, ['\\Seen'], () => {
+            //       // Mark the email as read after reading it
+            //       console.log('Marked as read!');
+            //     });
+            //   });
             });
             f.once('error', ex => {
               return Promise.reject(ex);
