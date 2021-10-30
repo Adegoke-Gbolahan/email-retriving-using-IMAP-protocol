@@ -4,8 +4,8 @@ const Imap = require('imap');
 inspect = require('util').inspect;
 const {simpleParser} = require('mailparser');
 const imapConfig = {
-  user: 'samadex5050@gmail.com',
-  password: '08101141109',
+  user: 'YourEmail',
+  password: 'Password',
   host: 'imap.gmail.com',
   port: 993,
   tls: true,
